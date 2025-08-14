@@ -21,6 +21,44 @@ interface SearchParams {
   search?: string;
 }
 
+// Course title mapping for better search
+const getCourseTitle = (slug: string) => {
+  const courseTitles: { [key: string]: string } = {
+    'first-lesson': 'Introduction to GIS',
+    'gis-basics': 'GIS Fundamentals',
+    'spatial-analysis': 'Spatial Analysis',
+    'web-mapping': 'Web Mapping',
+    'remote-sensing': 'Remote Sensing',
+    'database-management': 'Database Management',
+    'programming': 'GIS Programming',
+    'advanced-techniques': 'Advanced Techniques',
+    'automation': 'Process Automation',
+    'project-management': 'Project Management',
+  };
+  
+  // Remove any numbers from the slug and format properly
+  const cleanSlug = slug.replace(/\d+/g, '').replace(/[-_]/g, ' ').trim();
+  return courseTitles[slug] || cleanSlug.replace(/\b\w/g, l => l.toUpperCase());
+};
+
+// Course description mapping for better search
+const getCourseDescription = (slug: string) => {
+  const courseDescriptions: { [key: string]: string } = {
+    'first-lesson': 'Learn the fundamentals of Geographic Information Systems and spatial data concepts.',
+    'gis-basics': 'Master core GIS principles, data types, and basic spatial analysis techniques.',
+    'spatial-analysis': 'Explore advanced spatial analysis methods and statistical techniques for geographic data.',
+    'web-mapping': 'Create interactive web maps and develop modern mapping applications.',
+    'remote-sensing': 'Understand satellite imagery analysis and remote sensing data processing.',
+    'database-management': 'Learn spatial database design and management for GIS applications.',
+    'programming': 'Develop GIS automation scripts and custom spatial analysis tools.',
+    'advanced-techniques': 'Master advanced GIS workflows and specialized analysis methods.',
+    'automation': 'Automate GIS processes and create efficient spatial data workflows.',
+    'project-management': 'Plan and execute GIS projects from conception to completion.',
+  };
+  
+  return courseDescriptions[slug] || 'Explore comprehensive GIS concepts and practical applications.';
+};
+
 function stripHtml(html: string): string {
   return html.replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim();
 }
@@ -46,6 +84,25 @@ function extractOverview(html: string): string | null {
   return null;
 }
 
+// Enhanced search function that searches in titles, descriptions, and content
+function searchInCourse(searchQuery: string, slug: string, description: string): boolean {
+  if (!searchQuery.trim()) return true;
+  
+  const query = searchQuery.toLowerCase().trim();
+  const title = getCourseTitle(slug).toLowerCase();
+  const courseDescription = getCourseDescription(slug).toLowerCase();
+  const contentDescription = description.toLowerCase();
+  const slugLower = slug.toLowerCase();
+  
+  // Search in multiple fields
+  return (
+    title.includes(query) ||
+    courseDescription.includes(query) ||
+    contentDescription.includes(query) ||
+    slugLower.includes(query)
+  );
+}
+
 export default async function CoursesPage({
   searchParams,
 }: {
@@ -58,9 +115,25 @@ export default async function CoursesPage({
   const searchQuery = search || '';
   const itemsPerPage = 6;
 
-  // Filter lessons based on search query
+  // Build descriptions from course content (Overview/first paragraph)
+  const descriptionsEntries = await Promise.all(
+    allPages.map(async (slug) => {
+      try {
+        const { course } = await loadBlog(slug);
+        const html = course?.content ?? '';
+        const overview = extractOverview(html);
+        const description = truncate(overview ?? getCourseDescription(slug), 28);
+        return [slug, description] as const;
+      } catch {
+        return [slug, getCourseDescription(slug)] as const;
+      }
+    })
+  );
+  const descriptions = Object.fromEntries(descriptionsEntries);
+
+  // Enhanced filtering with comprehensive search
   const filteredPages = allPages.filter((page) =>
-    page.toLowerCase().includes(searchQuery.toLowerCase())
+    searchInCourse(searchQuery, page, descriptions[page])
   );
 
   // Calculate pagination
@@ -68,22 +141,6 @@ export default async function CoursesPage({
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
   const currentPages = filteredPages.slice(startIndex, endIndex);
-
-  // Build descriptions from course content (Overview/first paragraph)
-  const descriptionsEntries = await Promise.all(
-    currentPages.map(async (slug) => {
-      try {
-        const { course } = await loadBlog(slug);
-        const html = course?.content ?? '';
-        const overview = extractOverview(html);
-        const description = truncate(overview ?? 'Explore comprehensive GIS concepts and practical applications.', 28);
-        return [slug, description] as const;
-      } catch {
-        return [slug, 'Explore comprehensive GIS concepts and practical applications.'] as const;
-      }
-    })
-  );
-  const descriptions = Object.fromEntries(descriptionsEntries);
 
   return (
     <Container className='relative overflow-hidden'>
