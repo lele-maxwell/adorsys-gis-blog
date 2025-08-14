@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { ArrowLeft } from "react-feather";
+import { useTranslation } from "react-i18next";
 
 interface BackButtonProps {
 	href?: string;
@@ -9,8 +10,9 @@ interface BackButtonProps {
 	className?: string;
 }
 
-export default function BackButton({ href, label = "Back", className = "" }: BackButtonProps) {
+export default function BackButton({ href, label, className = "" }: BackButtonProps) {
 	const router = useRouter();
+	const { t } = useTranslation();
 
 	function handleClick() {
 		if (href) {
@@ -26,7 +28,7 @@ export default function BackButton({ href, label = "Back", className = "" }: Bac
 			className={`inline-flex items-center gap-2 px-4 py-2 rounded-full bg-base-200 hover:bg-base-300 text-base-content shadow transition-colors focus:outline-none focus:ring-2 focus:ring-primary/40 ${className}`}
 		>
 			<ArrowLeft className="w-4 h-4" />
-			<span className="text-sm font-medium">{label}</span>
+			<span className="text-sm font-medium">{label || t('backToCourses')}</span>
 		</button>
 	);
 } 

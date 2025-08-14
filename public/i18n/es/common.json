@@ -1,0 +1,33 @@
+{
+  "welcome": "Bienvenido a",
+  "knowledgeHub": "Centro de Conocimiento",
+  "gateway": "Tu Portal hacia la Excelencia Profesional",
+  "description": "Embárcate en un viaje de aprendizaje transformador con nuestra colección integral de cursos y recursos curados por expertos diseñados para elevar tus habilidades y avanzar en tu carrera.",
+  "expertLed": "Contenido Dirigido por Expertos",
+  "interactiveLearning": "Aprendizaje Interactivo",
+  "practicalSkills": "Habilidades Prácticas",
+  "getStarted": "Comenzar",
+  "ourCourses": "Nuestros Cursos",
+  "coursesDescription": "Explora nuestra colección integral de lecciones SIG, desde fundamentos hasta técnicas avanzadas. Cada curso está diseñado con contenido interactivo y ejemplos prácticos.",
+  "searchPlaceholder": "¿Qué estás buscando?",
+  "courses": "Cursos",
+  "coursesAvailable": "cursos disponibles",
+  "resultsFor": "Resultados para",
+  "backToCourses": "Volver a los Cursos",
+  "teamCollaboration": "Colaboración en Equipo",
+  "realTimeLearning": "Aprendizaje en tiempo real con compañeros",
+  "liveSession": "Sesión en Vivo",
+  "activeLearners": "Estudiantes Activos",
+  "globalCommunity": "Comunidad Global",
+  "languages": {
+    "en": "English",
+    "fr": "Français",
+    "es": "Español"
+  },
+  "navigation": {
+    "home": "Inicio",
+    "courses": "Cursos",
+    "search": "Buscar",
+    "language": "Idioma"
+  }
+} 

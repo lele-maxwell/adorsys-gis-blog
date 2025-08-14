@@ -1,0 +1,33 @@
+{
+  "welcome": "Bienvenue sur",
+  "knowledgeHub": "Hub de Connaissances",
+  "gateway": "Votre Portail vers l'Excellence Professionnelle",
+  "description": "Embarquez pour un voyage d'apprentissage transformateur avec notre collection complète de cours et de ressources expertement organisés conçus pour élever vos compétences et faire progresser votre carrière.",
+  "expertLed": "Contenu Dirigé par des Experts",
+  "interactiveLearning": "Apprentissage Interactif",
+  "practicalSkills": "Compétences Pratiques",
+  "getStarted": "Commencer",
+  "ourCourses": "Nos Cours",
+  "coursesDescription": "Explorez notre collection complète de leçons SIG, des fondamentaux aux techniques avancées. Chaque cours est conçu avec du contenu interactif et des exemples pratiques.",
+  "searchPlaceholder": "Que recherchez-vous ?",
+  "courses": "Cours",
+  "coursesAvailable": "cours disponibles",
+  "resultsFor": "Résultats pour",
+  "backToCourses": "Retour aux Cours",
+  "teamCollaboration": "Collaboration d'Équipe",
+  "realTimeLearning": "Apprentissage en temps réel avec les pairs",
+  "liveSession": "Session en Direct",
+  "activeLearners": "Apprenants Actifs",
+    "globalCommunity": "Communauté Mondiale",
+  "languages": {
+    "en": "English",
+    "fr": "Français",
+    "es": "Español"
+  },
+  "navigation": {
+    "home": "Accueil",
+    "courses": "Cours",
+    "search": "Recherche",
+    "language": "Langue"
+  }
+}                                                                                                                                                                                                                                                                                                     

@@ -1,0 +1,58 @@
+{
+  "common": {
+    "welcome": "Welcome to",
+    "knowledgeHub": "Knowledge Hub",
+    "gateway": "Your Gateway to Professional Excellence",
+    "description": "Embark on a transformative learning journey with our comprehensive collection of expertly curated courses and resources designed to elevate your skills and advance your career.",
+    "expertLed": "Expert-Led Content",
+    "interactiveLearning": "Interactive Learning",
+    "practicalSkills": "Practical Skills",
+    "getStarted": "Get Started",
+    "ourCourses": "Our Courses",
+    "coursesDescription": "Explore our comprehensive collection of GIS lessons, from fundamentals to advanced techniques. Each course is designed with interactive content and practical examples.",
+    "searchPlaceholder": "What are you looking for?",
+    "courses": "Courses",
+    "coursesAvailable": "courses available",
+    "resultsFor": "Results for",
+    "backToCourses": "Back to Courses",
+    "teamCollaboration": "Team Collaboration",
+    "realTimeLearning": "Real-time learning with peers",
+    "liveSession": "Live Session",
+    "activeLearners": "Active Learners",
+    "globalCommunity": "Global Community"
+  },
+  "action": {
+    "showToast": "Show Toast"
+  },
+  "navigation": {
+    "home": "Home",
+    "courses": "Courses",
+    "search": "Search",
+    "language": "Language"
+  },
+  "ui": {
+    "tryAgain": "Try again",
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success",
+    "cancel": "Cancel",
+    "save": "Save",
+    "delete": "Delete",
+    "edit": "Edit",
+    "close": "Close",
+    "next": "Next",
+    "previous": "Previous",
+    "submit": "Submit",
+    "reset": "Reset"
+  },
+  "languages": {
+    "en": "English",
+    "fr": "Français",
+    "es": "Español"
+  },
+  "flags": {
+    "en": "🇺🇸",
+    "fr": "🇫🇷",
+    "es": "🇪🇸"
+  }
+} 

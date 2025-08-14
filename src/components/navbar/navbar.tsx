@@ -1,6 +1,7 @@
 import {Container} from '@blog/components/container';
 import icon from '@blog/components/icon.svg';
 import {ThemeToggle} from '@blog/components/theme';
+import {LanguageSwitcher} from '@blog/components/language-switcher';
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -17,6 +18,7 @@ export function AppNavBar() {
                     </div>
                     
                     <div className='navbar-end flex gap-4'>
+                        <LanguageSwitcher />
                         <ThemeToggle/>
                     </div>
                 </nav>
