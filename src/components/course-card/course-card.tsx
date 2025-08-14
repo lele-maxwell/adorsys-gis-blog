@@ -3,17 +3,80 @@
 import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
 import { motion, useInView, useScroll, useTransform, easeOut } from 'framer-motion';
+import { BookOpen, Code, Globe, Database, Map, Layers, BarChart, Settings, Zap, Target } from 'react-feather';
 
 interface CourseCardProps {
   blog_slug: string;
   index: number;
+  description?: string;
 }
 
-export function CourseCard({ blog_slug, index }: CourseCardProps) {
+// Course icon mapping
+const getCourseIcon = (slug: string) => {
+  const courseIcons: { [key: string]: any } = {
+    'first-lesson': BookOpen,
+    'gis-basics': Map,
+    'spatial-analysis': BarChart,
+    'web-mapping': Globe,
+    'remote-sensing': Layers,
+    'database-management': Database,
+    'programming': Code,
+    'advanced-techniques': Settings,
+    'automation': Zap,
+    'project-management': Target,
+  };
+  
+  return courseIcons[slug] || BookOpen;
+};
+
+// Course title mapping
+const getCourseTitle = (slug: string) => {
+  const courseTitles: { [key: string]: string } = {
+    'first-lesson': 'Introduction to GIS',
+    'gis-basics': 'GIS Fundamentals',
+    'spatial-analysis': 'Spatial Analysis',
+    'web-mapping': 'Web Mapping',
+    'remote-sensing': 'Remote Sensing',
+    'database-management': 'Database Management',
+    'programming': 'GIS Programming',
+    'advanced-techniques': 'Advanced Techniques',
+    'automation': 'Process Automation',
+    'project-management': 'Project Management',
+  };
+  
+  // Remove any numbers from the slug and format properly
+  const cleanSlug = slug.replace(/\d+/g, '').replace(/[-_]/g, ' ').trim();
+  return courseTitles[slug] || cleanSlug.replace(/\b\w/g, l => l.toUpperCase());
+};
+
+// Course description mapping
+const getCourseDescription = (slug: string) => {
+  const courseDescriptions: { [key: string]: string } = {
+    'first-lesson': 'Learn the fundamentals of Geographic Information Systems and spatial data concepts.',
+    'gis-basics': 'Master core GIS principles, data types, and basic spatial analysis techniques.',
+    'spatial-analysis': 'Explore advanced spatial analysis methods and statistical techniques for geographic data.',
+    'web-mapping': 'Create interactive web maps and develop modern mapping applications.',
+    'remote-sensing': 'Understand satellite imagery analysis and remote sensing data processing.',
+    'database-management': 'Learn spatial database design and management for GIS applications.',
+    'programming': 'Develop GIS automation scripts and custom spatial analysis tools.',
+    'advanced-techniques': 'Master advanced GIS workflows and specialized analysis methods.',
+    'automation': 'Automate GIS processes and create efficient spatial data workflows.',
+    'project-management': 'Plan and execute GIS projects from conception to completion.',
+  };
+  
+  return courseDescriptions[slug] || 'Explore comprehensive GIS concepts and practical applications.';
+};
+
+export function CourseCard({ blog_slug, index, description }: CourseCardProps) {
   const cardRef = useRef<HTMLDivElement>(null);
   const imageRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(cardRef, { once: true, margin: '-100px' });
   const [isHovered, setIsHovered] = useState(false);
+  
+  // Get course icon and title
+  const CourseIcon = getCourseIcon(blog_slug);
+  const courseTitle = getCourseTitle(blog_slug);
+  const courseDescription = description || getCourseDescription(blog_slug);
   
   // Parallax scroll effect
   const { scrollYProgress } = useScroll({
@@ -128,9 +191,11 @@ export function CourseCard({ blog_slug, index }: CourseCardProps) {
               </svg>
             </div>
             
-            {/* Main icon/text */}
-            <div className='text-6xl font-black opacity-10 group-hover:opacity-20 transition-all duration-300 relative z-10'>
-              {blog_slug.substring(0, 2).toUpperCase()}
+            {/* Course Icon */}
+            <div className='relative z-10 flex flex-col items-center gap-3'>
+              <div className='w-16 h-16 bg-primary/20 rounded-2xl flex items-center justify-center group-hover:bg-primary/30 transition-all duration-300'>
+                <CourseIcon className='w-8 h-8 text-primary group-hover:scale-110 transition-transform duration-300' />
+              </div>
             </div>
             
             {/* Hover overlay effect */}
@@ -139,11 +204,11 @@ export function CourseCard({ blog_slug, index }: CourseCardProps) {
 
           {/* Card Content */}
           <div className='card-body relative z-10'>
-            <h2 className='card-title capitalize text-lg group-hover:text-primary transition-colors duration-300'>
-              {blog_slug.replace(/[-_]/g, ' ')}
+            <h2 className='text-2xl font-bold text-base-content group-hover:text-primary transition-colors duration-300 leading-tight'>
+              {courseTitle}
             </h2>
-            <p className='text-sm opacity-70 group-hover:opacity-90 transition-colors duration-300'>
-              Click to view lesson details and slides.
+            <p className='text-sm opacity-70 group-hover:opacity-90 transition-colors duration-300 leading-relaxed'>
+              {courseDescription}
             </p>
             <div className='card-actions justify-end'>
               <span className='btn btn-primary btn-sm rounded-full group-hover:scale-105 transition-transform duration-300'>
