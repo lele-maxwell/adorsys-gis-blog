@@ -6,6 +6,7 @@ import { Pagination } from '@blog/components/pagination';
 import { CourseCard } from '@blog/components/course-card';
 import { DecorativeElements } from '@blog/components/decorative-elements';
 import { Search, ChevronDown } from 'react-feather';
+import { loadBlog } from '@blog/converters';
 
 export const dynamic = 'force-dynamic';
 
@@ -17,6 +18,31 @@ export const metadata: Metadata = {
 interface SearchParams {
   page?: string;
   search?: string;
+}
+
+function stripHtml(html: string): string {
+  return html.replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim();
+}
+
+function truncate(text: string, words: number): string {
+  const parts = text.split(' ');
+  if (parts.length <= words) return text;
+  return parts.slice(0, words).join(' ') + '…';
+}
+
+function extractOverview(html: string): string | null {
+  // Try to find an Overview/Project Overview heading and take the first following paragraph
+  const overviewHeadingRegex = /<h[1-4][^>]*>([^<]*overview[^<]*)<\/h[1-4]>[\s\S]*?(<p>[\s\S]*?<\/p>)/i;
+  const overviewMatch = overviewHeadingRegex.exec(html);
+  if (overviewMatch) {
+    return stripHtml(overviewMatch[2]);
+  }
+  // Fallback: first paragraph in the document
+  const firstParagraph = /<p>([\s\S]*?)<\/p>/i.exec(html);
+  if (firstParagraph) {
+    return stripHtml(firstParagraph[1]);
+  }
+  return null;
 }
 
 export default async function CoursesPage({
@@ -39,6 +65,22 @@ export default async function CoursesPage({
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
   const currentPages = filteredPages.slice(startIndex, endIndex);
+
+  // Build descriptions from course content (Overview/first paragraph)
+  const descriptionsEntries = await Promise.all(
+    currentPages.map(async (slug) => {
+      try {
+        const { course } = await loadBlog(slug);
+        const html = course?.content ?? '';
+        const overview = extractOverview(html);
+        const description = truncate(overview ?? 'Explore comprehensive GIS concepts and practical applications.', 28);
+        return [slug, description] as const;
+      } catch {
+        return [slug, 'Explore comprehensive GIS concepts and practical applications.'] as const;
+      }
+    })
+  );
+  const descriptions = Object.fromEntries(descriptionsEntries);
 
   return (
     <Container className='relative overflow-hidden'>
@@ -115,6 +157,7 @@ export default async function CoursesPage({
             key={blog_slug}
             blog_slug={blog_slug}
             index={index}
+            description={descriptions[blog_slug]}
           />
         ))}
       </div>
