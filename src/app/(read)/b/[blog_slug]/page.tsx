@@ -4,6 +4,7 @@ import {loadBlog} from "@blog/converters";
 import {getAllBlogs} from "@blog/server/blog/api";
 import {Suspense} from "react";
 import Display from "@blog/components/display";
+import BackButton from '@blog/components/back-button';
 
 export const dynamic = 'force-dynamic';
 
@@ -41,6 +42,9 @@ export default async function SingleBlogPage({params}: Props) {
     const {course, slides} = await loadBlog(blog_slug);
     return (
         <Container>
+            <div className='mb-4'>
+                <BackButton href='/courses' label='Back to Courses' />
+            </div>
             {slides && (
                 <Suspense>
                     <Display data={slides.content}/>
