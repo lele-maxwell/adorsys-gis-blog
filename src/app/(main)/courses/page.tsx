@@ -84,7 +84,7 @@ function extractOverview(html: string): string | null {
   return null;
 }
 
-// Enhanced search function that searches in titles, descriptions, and content
+// Enhanced search function that searches in titles, descriptions, and content with partial matching
 function searchInCourse(searchQuery: string, slug: string, description: string): boolean {
   if (!searchQuery.trim()) return true;
   
@@ -94,12 +94,28 @@ function searchInCourse(searchQuery: string, slug: string, description: string):
   const contentDescription = description.toLowerCase();
   const slugLower = slug.toLowerCase();
   
-  // Search in multiple fields
-  return (
-    title.includes(query) ||
-    courseDescription.includes(query) ||
-    contentDescription.includes(query) ||
-    slugLower.includes(query)
+  // Split query into individual words for partial matching
+  const queryWords = query.split(/\s+/).filter(word => word.length > 0);
+  
+  // If single word query, check for partial matches
+  if (queryWords.length === 1) {
+    const word = queryWords[0];
+    
+    // Check if any field contains the word (partial match)
+    return (
+      title.includes(word) ||
+      courseDescription.includes(word) ||
+      contentDescription.includes(word) ||
+      slugLower.includes(word)
+    );
+  }
+  
+  // For multi-word queries, check if ALL words are found in ANY field
+  return queryWords.every(word => 
+    title.includes(word) ||
+    courseDescription.includes(word) ||
+    contentDescription.includes(word) ||
+    slugLower.includes(word)
   );
 }
 
