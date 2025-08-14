@@ -43,7 +43,14 @@ function useDirectTranslation() {
         'resultsFor': 'Results for',
         'clearSearch': 'Clear search',
         'noResults': 'No courses found',
-        'tryDifferentKeywords': 'Try different keywords or browse all courses'
+        'tryDifferentKeywords': 'Try different keywords or browse all courses',
+        'searchSuggestions': 'Popular searches:',
+        'suggestion1': 'gis',
+        'suggestion2': 'analysis',
+        'suggestion3': 'programming',
+        'suggestion4': 'web mapping',
+        'suggestion5': 'database',
+        'suggestion6': 'automation'
       },
       fr: {
         'ourCourses': 'Nos Cours',
@@ -54,7 +61,14 @@ function useDirectTranslation() {
         'resultsFor': 'Résultats pour',
         'clearSearch': 'Effacer la recherche',
         'noResults': 'Aucun cours trouvé',
-        'tryDifferentKeywords': 'Essayez différents mots-clés ou parcourez tous les cours'
+        'tryDifferentKeywords': 'Essayez différents mots-clés ou parcourez tous les cours',
+        'searchSuggestions': 'Recherches populaires:',
+        'suggestion1': 'sig',
+        'suggestion2': 'analyse',
+        'suggestion3': 'programmation',
+        'suggestion4': 'cartographie web',
+        'suggestion5': 'base de données',
+        'suggestion6': 'automatisation'
       },
       es: {
         'ourCourses': 'Nuestros Cursos',
@@ -65,7 +79,14 @@ function useDirectTranslation() {
         'resultsFor': 'Resultados para',
         'clearSearch': 'Limpiar búsqueda',
         'noResults': 'No se encontraron cursos',
-        'tryDifferentKeywords': 'Intenta diferentes palabras clave o explora todos los cursos'
+        'tryDifferentKeywords': 'Intenta diferentes palabras clave o explora todos los cursos',
+        'searchSuggestions': 'Búsquedas populares:',
+        'suggestion1': 'sig',
+        'suggestion2': 'análisis',
+        'suggestion3': 'programación',
+        'suggestion4': 'mapeo web',
+        'suggestion5': 'base de datos',
+        'suggestion6': 'automatización'
       }
     };
 
@@ -138,6 +159,10 @@ export default function CoursesContent({
     // Search is already handled by the debounced effect
   }, []);
 
+  const handleSuggestionClick = useCallback((suggestion: string) => {
+    setLocalSearchQuery(suggestion);
+  }, []);
+
   return (
     <>
       {/* Header Section */}
@@ -153,7 +178,7 @@ export default function CoursesContent({
       </div>
 
       {/* Enhanced Search Section */}
-      <div className='max-w-2xl mx-auto mb-12'>
+      <div className='max-w-2xl mx-auto mb-8'>
         <form onSubmit={handleSubmit} className='relative'>
           <div className='relative flex items-center bg-base-200 border border-base-300 rounded-full overflow-hidden shadow-sm focus-within:ring-2 focus-within:ring-primary/50 focus-within:border-primary transition-all duration-200'>
             {/* Search Input */}
@@ -197,6 +222,31 @@ export default function CoursesContent({
             </button>
           </div>
         </form>
+        
+        {/* Search Suggestions */}
+        {!localSearchQuery && (
+          <div className='mt-4 text-center'>
+            <p className='text-sm text-base-content/60 mb-2'>{t('searchSuggestions')}</p>
+            <div className='flex flex-wrap justify-center gap-2'>
+              {[
+                t('suggestion1'),
+                t('suggestion2'),
+                t('suggestion3'),
+                t('suggestion4'),
+                t('suggestion5'),
+                t('suggestion6')
+              ].map((suggestion, index) => (
+                <button
+                  key={index}
+                  onClick={() => handleSuggestionClick(suggestion)}
+                  className='px-3 py-1 text-xs bg-base-300 hover:bg-base-400 text-base-content/80 hover:text-base-content rounded-full transition-all duration-200 hover:scale-105'
+                >
+                  {suggestion}
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
 
       {/* Results Summary */}
