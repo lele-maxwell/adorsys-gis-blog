@@ -48,11 +48,13 @@ function extractOverview(html: string): string | null {
 export default async function CoursesPage({
   searchParams,
 }: {
-  searchParams: SearchParams;
+  searchParams: Promise<SearchParams> | SearchParams;
 }) {
+  const { page = '1', search = '' } = await Promise.resolve(searchParams);
+
   const allPages = await getAllBlogs();
-  const currentPage = parseInt(searchParams.page || '1');
-  const searchQuery = searchParams.search || '';
+  const currentPage = parseInt(page || '1');
+  const searchQuery = search || '';
   const itemsPerPage = 6;
 
   // Filter lessons based on search query
