@@ -158,7 +158,7 @@ export default async function Home() {
                     {/* Live Session Card - Middle Cutting Through Both */}
                     <div className='absolute top-80 -right-8 w-64 h-40 bg-white/10 backdrop-blur-sm rounded-2xl border border-white/20 shadow-lg z-30'>
                       <div className='p-6 h-full flex flex-col justify-between'>
-                        <div className='flex items-center gap-3'>
+                    <div className='flex items-center gap-3'>
                           <div className='w-4 h-4 bg-green-400 rounded-full animate-pulse'></div>
                           <span className='text-white/90 text-base font-medium'>Live Session</span>
                         </div>
