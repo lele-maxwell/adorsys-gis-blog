@@ -6,6 +6,8 @@ import {mainThemes, themeDataKey} from "@blog/components/theme/constants";
 import {HydrateClient} from "@blog/trpc/server";
 import {ThemeProvider} from "next-themes";
 import type {PropsWithChildren} from "react";
+import { ConditionalTolgeeProvider } from "@blog/components/tolgee-provider";
+import { I18nProvider } from "@blog/components/i18n-provider";
 
 export const metadata: Metadata = {
     title: "Create T3 App",
@@ -20,7 +22,11 @@ export default function RootLayout({children,}: Readonly<PropsWithChildren>) {
         <TRPCReactProvider>
             <HydrateClient>
                 <ThemeProvider storageKey={themeDataKey} themes={mainThemes}>
+                    <I18nProvider>
+                        <ConditionalTolgeeProvider>
                     {children}
+                        </ConditionalTolgeeProvider>
+                    </I18nProvider>
                 </ThemeProvider>
             </HydrateClient>
         </TRPCReactProvider>
