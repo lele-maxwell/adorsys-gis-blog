@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
+import { useLanguage } from './LanguageContext';
 
 const languages = [
   { code: 'en', name: 'English', flag: '🇺🇸' },
@@ -13,7 +14,7 @@ interface LanguageSwitcherProps {
 }
 
 export default function LanguageSwitcher({ variant = 'full' }: LanguageSwitcherProps) {
-  const [currentLanguage, setCurrentLanguage] = useState('en');
+  const { currentLanguage, setLanguage } = useLanguage();
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -31,15 +32,8 @@ export default function LanguageSwitcher({ variant = 'full' }: LanguageSwitcherP
   }, []);
 
   const changeLanguage = (languageCode: string) => {
-    setCurrentLanguage(languageCode);
+    setLanguage(languageCode);
     setIsOpen(false);
-    
-    // Emit custom event for the direct translation system
-    const event = new CustomEvent('languageChange', {
-      detail: { language: languageCode }
-    });
-    window.dispatchEvent(event);
-    
     console.log('Language changed to:', languageCode);
   };
 
@@ -49,20 +43,20 @@ export default function LanguageSwitcher({ variant = 'full' }: LanguageSwitcherP
       <div className="relative" ref={dropdownRef}>
         <button
           onClick={() => setIsOpen(!isOpen)}
-          className="p-3 bg-base-200/60 backdrop-blur-md rounded-xl text-base-content/70 hover:text-base-content hover:bg-base-200/80 transition-colors shadow-lg"
+          className="p-2.5 bg-white/15 hover:bg-primary/25 hover:border-primary/30 hover:shadow-lg hover:shadow-primary/20 transition-all duration-300 rounded-xl text-white/80 hover:text-primary border border-transparent"
           aria-label="Select language"
           aria-expanded={isOpen}
           aria-haspopup="true"
         >
           {/* Globe Icon Only */}
-          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
           </svg>
         </button>
 
         {isOpen && (
           <div 
-            className="absolute top-full mt-2 left-0 bg-base-200/95 backdrop-blur-md rounded-xl shadow-lg border border-base-300/50 min-w-[160px] z-50"
+            className="absolute top-full mt-2 left-0 bg-white/20 backdrop-blur-xl rounded-xl shadow-xl border border-white/30 min-w-[160px] z-50"
             role="menu"
             aria-orientation="vertical"
           >
@@ -70,8 +64,8 @@ export default function LanguageSwitcher({ variant = 'full' }: LanguageSwitcherP
               <button
                 key={language.code}
                 onClick={() => changeLanguage(language.code)}
-                className={`w-full flex items-center gap-3 px-4 py-3 text-left hover:bg-base-300/50 transition-colors first:rounded-t-xl last:rounded-b-xl ${
-                  currentLanguage === language.code ? 'bg-primary/20 text-primary' : 'text-base-content/80'
+                className={`w-full flex items-center gap-3 px-4 py-3 text-left hover:bg-primary/25 hover:text-primary transition-all duration-300 first:rounded-t-xl last:rounded-b-xl ${
+                  currentLanguage === language.code ? 'bg-primary/30 text-primary' : 'text-white/80'
                 }`}
                 role="menuitem"
                 aria-current={currentLanguage === language.code ? 'true' : 'false'}
@@ -91,7 +85,7 @@ export default function LanguageSwitcher({ variant = 'full' }: LanguageSwitcherP
     <div className="relative" ref={dropdownRef}>
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center gap-2 px-3 py-2 bg-base-200/60 backdrop-blur-md rounded-xl text-base-content/70 hover:text-base-content hover:bg-base-200/80 transition-colors shadow-lg"
+        className="flex items-center gap-2 px-3 py-2 bg-white/15 hover:bg-primary/25 hover:border-primary/30 hover:shadow-lg hover:shadow-primary/20 transition-all duration-300 rounded-xl text-white/80 hover:text-primary border border-transparent backdrop-blur-md"
         aria-label="Select language"
         aria-expanded={isOpen}
         aria-haspopup="true"
@@ -113,7 +107,7 @@ export default function LanguageSwitcher({ variant = 'full' }: LanguageSwitcherP
 
       {isOpen && (
         <div 
-          className="absolute top-full mt-2 right-0 bg-base-200/95 backdrop-blur-md rounded-xl shadow-lg border border-base-300/50 min-w-[160px] z-50"
+          className="absolute top-full mt-2 right-0 bg-white/20 backdrop-blur-xl rounded-xl shadow-xl border border-white/30 min-w-[160px] z-50"
           role="menu"
           aria-orientation="vertical"
         >
@@ -121,8 +115,8 @@ export default function LanguageSwitcher({ variant = 'full' }: LanguageSwitcherP
             <button
               key={language.code}
               onClick={() => changeLanguage(language.code)}
-              className={`w-full flex items-center gap-3 px-4 py-3 text-left hover:bg-base-300/50 transition-colors first:rounded-t-xl last:rounded-b-xl ${
-                currentLanguage === language.code ? 'bg-primary/20 text-primary' : 'text-base-content/80'
+              className={`w-full flex items-center gap-3 px-4 py-3 text-left hover:bg-primary/25 hover:text-primary transition-all duration-300 first:rounded-t-xl last:rounded-b-xl ${
+                currentLanguage === language.code ? 'bg-primary/30 text-primary' : 'text-white/80'
               }`}
               role="menuitem"
               aria-current={currentLanguage === language.code ? 'true' : 'false'}
