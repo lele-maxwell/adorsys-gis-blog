@@ -3,8 +3,8 @@ import {redirect} from 'next/navigation';
 import {loadBlog} from "@blog/converters";
 import {getAllBlogs} from "@blog/server/blog/api";
 import {Suspense} from "react";
-import Display from "@blog/components/display";
 import BackButton from '@blog/components/back-button';
+import { TranslatedCourseContent } from '../../../../components/translated-course-content';
 
 export const dynamic = 'force-dynamic';
 
@@ -45,16 +45,27 @@ export default async function SingleBlogPage({params}: Props) {
             <div className='mb-4'>
                 <BackButton href='/courses' label='Back to Courses' />
             </div>
+            
+            {/* Slides with translation support */}
             {slides && (
                 <Suspense>
-                    <Display data={slides.content}/>
+                    <TranslatedCourseContent
+                        data={slides.content}
+                        type="slides"
+                        blogSlug={blog_slug}
+                    />
                 </Suspense>
             )}
 
+            {/* Course content with translation support */}
             {course.content && (
-                <article className='prose prose-neutral lg:prose-xl mx-auto mt-8'>
-                    <div dangerouslySetInnerHTML={{__html: course.content}}/>
-                </article>
+                <Suspense>
+                    <TranslatedCourseContent
+                        data={course.content}
+                        type="course"
+                        blogSlug={blog_slug}
+                    />
+                </Suspense>
             )}
         </Container>
     );
