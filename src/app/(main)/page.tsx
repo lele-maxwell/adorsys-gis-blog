@@ -1,7 +1,5 @@
 import Link from 'next/link';
 import { Container } from '@blog/components/container';
-import { Home as HomeIcon, BookOpen, Search } from 'react-feather';
-import { LanguageSwitcher } from '@blog/components/language-switcher';
 import { TranslatedHomeContent } from './TranslatedHomeContent';
 
 export default async function Home() {
@@ -17,34 +15,13 @@ export default async function Home() {
         />
       </div>
 
-      {/* Main Content with Left Navigation */}
-      <div className='flex relative z-10'>
-        {/* Left Vertical Navigation Bar */}
-        <div className='fixed left-6 top-1/2 transform -translate-y-1/2 z-40 flex flex-col items-center gap-8'>
-          <Link href='/' className='p-3 bg-primary/20 rounded-xl text-primary hover:bg-primary/30 transition-colors shadow-lg'>
-            <HomeIcon className='w-6 h-6' />
-          </Link>
-          
-          <Link href='/courses' className='p-3 bg-base-200/60 backdrop-blur-md rounded-xl text-base-content/70 hover:text-base-content hover:bg-base-200/80 transition-colors shadow-lg'>
-            <BookOpen className='w-6 h-6' />
-          </Link>
-          
-          <div className='p-3 bg-base-200/60 backdrop-blur-md rounded-xl text-base-content/70 hover:text-base-content hover:bg-base-200/80 transition-colors cursor-pointer shadow-lg'>
-            <Search className='w-6 h-6' />
-          </div>
-          
-          {/* Language Selector - Icon only for vertical navigation */}
-          <LanguageSwitcher variant="icon-only" />
-        </div>
-
-        {/* Main Content Area */}
-        <div className='flex-1 ml-24'>
-          {/* Hero Section */}
-          <div className='relative overflow-hidden'>
-            <Container className='relative z-10'>
-              <TranslatedHomeContent />
-            </Container>
-          </div>
+      {/* Main Content Area */}
+      <div className='relative z-10 ml-24'>
+        {/* Hero Section */}
+        <div className='relative overflow-hidden'>
+          <Container className='relative z-10'>
+            <TranslatedHomeContent />
+          </Container>
         </div>
       </div>
     </div>
