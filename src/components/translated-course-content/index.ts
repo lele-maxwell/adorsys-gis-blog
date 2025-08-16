@@ -1,0 +1,1 @@
+export { TranslatedCourseContent } from './TranslatedCourseContent'; 
