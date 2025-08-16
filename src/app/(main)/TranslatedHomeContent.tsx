@@ -1,23 +1,11 @@
 'use client';
 
 import Link from 'next/link';
-import { useState, useEffect } from 'react';
+import { useLanguage } from '@blog/components/language-switcher';
 
 // Direct translation function that doesn't depend on i18next
 function useDirectTranslation() {
-  const [currentLanguage, setCurrentLanguage] = useState('en');
-  
-  // Listen for language changes from the language switcher
-  useEffect(() => {
-    const handleLanguageChange = (event: CustomEvent) => {
-      setCurrentLanguage(event.detail.language);
-    };
-    
-    window.addEventListener('languageChange', handleLanguageChange as EventListener);
-    return () => {
-      window.removeEventListener('languageChange', handleLanguageChange as EventListener);
-    };
-  }, []);
+  const { currentLanguage } = useLanguage();
 
   const t = (key: string) => {
     const translations = {
