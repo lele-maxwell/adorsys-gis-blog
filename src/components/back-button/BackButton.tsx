@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { ArrowLeft } from "react-feather";
-import { useTranslation } from "react-i18next";
+import { useLanguage } from '@blog/components/language-switcher';
 
 interface BackButtonProps {
 	href?: string;
@@ -10,9 +10,32 @@ interface BackButtonProps {
 	className?: string;
 }
 
+// Direct translation function for back button
+function useDirectTranslation() {
+  const { currentLanguage } = useLanguage();
+
+  const t = (key: string) => {
+    const translations = {
+      en: {
+        'backToCourses': 'Back to Courses'
+      },
+      fr: {
+        'backToCourses': 'Retour aux Cours'
+      },
+      es: {
+        'backToCourses': 'Volver a los Cursos'
+      }
+    };
+
+    return translations[currentLanguage as keyof typeof translations]?.[key as keyof typeof translations.en] || key;
+  };
+
+  return { t, currentLanguage };
+}
+
 export default function BackButton({ href, label, className = "" }: BackButtonProps) {
 	const router = useRouter();
-	const { t } = useTranslation();
+	const { t } = useDirectTranslation();
 
 	function handleClick() {
 		if (href) {
@@ -31,4 +54,3 @@ export default function BackButton({ href, label, className = "" }: BackButtonPr
 			<span className="text-sm font-medium">{label || t('backToCourses')}</span>
 		</button>
 	);
-} 
