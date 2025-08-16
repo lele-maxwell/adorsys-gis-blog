@@ -5,6 +5,7 @@ import { Search, ChevronDown, X } from 'react-feather';
 import { CourseCard } from '@blog/components/course-card';
 import { Pagination } from '@blog/components/pagination';
 import { useRouter, useSearchParams } from 'next/navigation';
+import { useLanguage } from '@blog/components/language-switcher';
 
 interface CoursesContentProps {
   allPages: string[];
@@ -18,19 +19,7 @@ interface CoursesContentProps {
 
 // Direct translation function for courses page
 function useDirectTranslation() {
-  const [currentLanguage, setCurrentLanguage] = useState('en');
-  
-  // Listen for language changes from the language switcher
-  useEffect(() => {
-    const handleLanguageChange = (event: CustomEvent) => {
-      setCurrentLanguage(event.detail.language);
-    };
-    
-    window.addEventListener('languageChange', handleLanguageChange as EventListener);
-    return () => {
-      window.removeEventListener('languageChange', handleLanguageChange as EventListener);
-    };
-  }, []);
+  const { currentLanguage } = useLanguage();
 
   const t = (key: string) => {
     const translations = {
@@ -172,7 +161,7 @@ export default function CoursesContent({
             {t('ourCourses')}
           </span>
         </h1>
-        <p className='text-lg md:text-xl opacity-80 max-w-2xl mx-auto leading-relaxed'>
+        <p className='text-lg md:text-xl text-white/75 max-w-2xl mx-auto leading-relaxed'>
           {t('coursesDescription')}
         </p>
       </div>
@@ -180,7 +169,7 @@ export default function CoursesContent({
       {/* Enhanced Search Section */}
       <div className='max-w-2xl mx-auto mb-8'>
         <form onSubmit={handleSubmit} className='relative'>
-          <div className='relative flex items-center bg-base-200 border border-base-300 rounded-full overflow-hidden shadow-sm focus-within:ring-2 focus-within:ring-primary/50 focus-within:border-primary transition-all duration-200'>
+          <div className='relative flex items-center bg-white/15 backdrop-blur-xl border border-white/20 rounded-full overflow-hidden shadow-2xl focus-within:ring-2 focus-within:ring-primary/50 focus-within:border-primary transition-all duration-200'>
             {/* Search Input */}
             <input
               type='text'
@@ -188,7 +177,7 @@ export default function CoursesContent({
               placeholder={t('searchPlaceholder')}
               value={localSearchQuery}
               onChange={handleSearchChange}
-              className='flex-1 pl-6 pr-12 py-4 bg-transparent border-none outline-none text-base placeholder:text-base-content/50'
+              className='flex-1 pl-6 pr-12 py-4 bg-transparent border-none outline-none text-white placeholder:text-white/50'
               autoComplete='off'
             />
             
@@ -197,7 +186,7 @@ export default function CoursesContent({
               <button
                 type='button'
                 onClick={handleClearSearch}
-                className='absolute right-16 p-2 text-base-content/50 hover:text-base-content transition-colors duration-200'
+                className='absolute right-16 p-2 text-white/50 hover:text-white transition-colors duration-200'
                 aria-label={t('clearSearch')}
               >
                 <X className='w-4 h-4' />
@@ -205,18 +194,18 @@ export default function CoursesContent({
             )}
             
             {/* Dropdown Divider */}
-            <div className='w-px h-8 bg-base-300'></div>
+            <div className='w-px h-8 bg-white/20'></div>
             
             {/* Dropdown Menu */}
-            <div className='flex items-center gap-2 px-4 py-2 cursor-pointer hover:bg-base-300 transition-colors duration-200'>
-              <span className='text-sm font-medium text-base-content/70'>{t('courses')}</span>
-              <ChevronDown className='w-4 h-4 text-base-content/50' />
+            <div className='flex items-center gap-2 px-4 py-2 cursor-pointer hover:bg-white/10 transition-colors duration-200'>
+              <span className='text-sm font-medium text-white/60'>{t('courses')}</span>
+              <ChevronDown className='w-4 h-4 text-white/50' />
             </div>
             
             {/* Search Button */}
             <button
               type='submit'
-              className='ml-2 p-4 bg-primary hover:bg-primary-focus text-primary-content rounded-full transition-all duration-200 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-primary/50'
+              className='ml-2 p-4 bg-primary hover:bg-primary-focus text-primary-content rounded-full transition-all duration-200 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-primary/50 shadow-xl'
             >
               <Search className='w-5 h-5' />
             </button>
@@ -226,7 +215,7 @@ export default function CoursesContent({
         {/* Search Suggestions */}
         {!localSearchQuery && (
           <div className='mt-4 text-center'>
-            <p className='text-sm text-base-content/60 mb-2'>{t('searchSuggestions')}</p>
+            <p className='text-sm text-white/50 mb-2'>{t('searchSuggestions')}</p>
             <div className='flex flex-wrap justify-center gap-2'>
               {[
                 t('suggestion1'),
@@ -239,7 +228,7 @@ export default function CoursesContent({
                 <button
                   key={index}
                   onClick={() => handleSuggestionClick(suggestion)}
-                  className='px-3 py-1 text-xs bg-base-300 hover:bg-base-400 text-base-content/80 hover:text-base-content rounded-full transition-all duration-200 hover:scale-105'
+                  className='px-3 py-1 text-xs bg-white/15 hover:bg-primary/25 hover:text-primary text-white/70 rounded-full transition-all duration-200 hover:scale-105 border border-white/20 hover:border-primary/30 backdrop-blur-md'
                 >
                   {suggestion}
                 </button>
@@ -251,14 +240,14 @@ export default function CoursesContent({
 
       {/* Results Summary */}
       <div className='text-center mb-8'>
-        <div className='inline-flex items-center gap-2 px-4 py-2 bg-base-200 rounded-full'>
-          <span className='text-sm font-medium'>
+        <div className='inline-flex items-center gap-2 px-4 py-2 bg-white/15 backdrop-blur-xl rounded-full border border-white/20'>
+          <span className='text-sm font-medium text-white/80'>
             {filteredPages.length} {t('coursesAvailable')}
           </span>
           {searchQuery && (
             <>
-              <span className='text-base-content/30'>•</span>
-              <span className='text-sm opacity-70'>
+              <span className='text-white/30'>•</span>
+              <span className='text-sm text-white/60'>
                 {t('resultsFor')} "{searchQuery}"
               </span>
             </>
@@ -271,15 +260,15 @@ export default function CoursesContent({
         <div className='text-center py-12'>
           <div className='max-w-md mx-auto'>
             <div className='text-6xl mb-4'>🔍</div>
-            <h3 className='text-xl font-semibold mb-2'>{t('noResults')}</h3>
-            <p className='text-base-content/70'>{t('tryDifferentKeywords')}</p>
+            <h3 className='text-xl font-semibold mb-2 text-white'>{t('noResults')}</h3>
+            <p className='text-white/60'>{t('tryDifferentKeywords')}</p>
           </div>
         </div>
       )}
 
       {/* Courses Grid */}
       {filteredPages.length > 0 && (
-        <div className='grid gap-8 sm:grid-cols-2 lg:grid-cols-3 mb-12'>
+        <div className='grid gap-8 sm:grid-cols-2 lg:grid-cols-3 mb-12 items-stretch'>
           {currentPages.map((blog_slug, index) => (
             <CourseCard
               key={blog_slug}
@@ -303,4 +292,4 @@ export default function CoursesContent({
       )}
     </>
   );
-} 
+}
